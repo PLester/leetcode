@@ -46,3 +46,55 @@ public:
         return -1;
     }
 };
+
+81. Search in Rotated Sorted Array II
+Medium
+458
+225
+
+
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+
+(i.e., [0,0,1,2,2,5,6] might become [2,5,6,0,0,1,2]).
+
+You are given a target value to search. If found in the array return true, otherwise return false.
+
+Example 1:
+
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+Example 2:
+
+Input: nums = [2,5,6,0,0,1,2], target = 3
+Output: false
+Follow up:
+
+This is a follow up problem to Search in Rotated Sorted Array, where nums may contain duplicates.
+Would this affect the run-time complexity? How and why?
+
+class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int first = 0, last = nums.size();
+        while(first != last){
+            const int mid = first + (last - first)/2;
+            if(nums[mid] == target) 
+                return true;
+            
+            if(nums[first] < nums[mid]){
+                if(nums[first] <= target && target < nums[mid])
+                    last = mid;
+                else
+                    first = mid + 1;
+            }else if(nums[first] > nums[mid]){
+                if(nums[mid] < target && target <= nums[last-1]) //注意边界的最大下标
+                    first = mid +1;
+                else 
+                    last = mid;
+            }else{
+                ++first;
+            }
+        }
+        return false;
+    }
+};
